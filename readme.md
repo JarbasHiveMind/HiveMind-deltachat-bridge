@@ -2,6 +2,7 @@
 
 [DeltaChat](https://delta.chat/en/) bridge for the [HiveMind](https://github.com/OpenJarbas/HiveMind-core)
 
+![logo](./deltachat.png)
 ![img.png](img.png)
 
 ## Install
@@ -32,3 +33,5 @@ optional arguments:
   --host HOST           HiveMind host
   --port PORT           HiveMind port number
 ```
+
+NOTE: you only need to provide the password the first time you connect
