@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='HiveMind-deltachat-bridge',
     version='0.0.2',
-    packages=['deltachat_bridge'],
+    packages=['hm_deltachat_bridge'],
     url='https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge',
     license='Apache-2.0',
     author='jarbasAI',
