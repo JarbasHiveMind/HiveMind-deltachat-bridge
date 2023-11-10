@@ -12,26 +12,15 @@ $ pip install HiveMind-deltachat-bridge
 ```
 ## Usage
 
-If host is not provided auto discovery will be used
-
 ```bash
-$ HiveMind-deltachat-bridge --help
+$ hm-deltachat-bridge --help
 
-usage: __main__.py [-h] --access_key ACCESS_KEY --email EMAIL --password
-                   PASSWORD [--crypto_key CRYPTO_KEY] [--name NAME]
-                   [--host HOST] [--port PORT]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --access_key ACCESS_KEY
-                        hivemind access key
-  --email EMAIL         deltachat email
-  --password PASSWORD   deltachat password
-  --crypto_key CRYPTO_KEY
-                        payload encryption key
-  --name NAME           human readable device name
-  --host HOST           HiveMind host
-  --port PORT           HiveMind port number
+Options:
+  --email TEXT           deltachat email
+  --email-password TEXT  deltachat email password
+  --key TEXT             HiveMind access key (default read from identity file)
+  --password TEXT        HiveMind password (default read from identity file)
+  --host TEXT            HiveMind host (default read from identity file)
+  --port INTEGER         HiveMind port number (default: 5678)
+  --help                 Show this message and exit.
 ```
-
-NOTE: you only need to provide the password the first time you connect
