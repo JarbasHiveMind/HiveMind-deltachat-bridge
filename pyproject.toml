@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hivemind-deltachat-bridge"
+dynamic = ["version"]
+description = "DeltaChat bridge for HiveMind"
+readme = "readme.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+dependencies = [
+    "hivemind_bus_client",
+    "click",
+    "deltachat",
+]
+
+[project.scripts]
+hm-deltachat-bridge = "hm_deltachat_bridge.__main__:launch_bot"
+
+[tool.setuptools]
+packages = ["hm_deltachat_bridge"]
+
+[tool.setuptools.dynamic]
+version = {attr = "hm_deltachat_bridge.version.__version__"}

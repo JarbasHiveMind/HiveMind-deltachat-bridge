@@ -1,0 +1,11 @@
+LICENSE
+setup.py
+HiveMind_deltachat_bridge.egg-info/PKG-INFO
+HiveMind_deltachat_bridge.egg-info/SOURCES.txt
+HiveMind_deltachat_bridge.egg-info/dependency_links.txt
+HiveMind_deltachat_bridge.egg-info/entry_points.txt
+HiveMind_deltachat_bridge.egg-info/requires.txt
+HiveMind_deltachat_bridge.egg-info/top_level.txt
+hm_deltachat_bridge/__init__.py
+hm_deltachat_bridge/__main__.py
+hm_deltachat_bridge/deltabot.py

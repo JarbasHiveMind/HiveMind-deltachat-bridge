@@ -1,0 +1,2 @@
+[console_scripts]
+hm-deltachat-bridge = deltachat_bridge.__main__:launch_bot
