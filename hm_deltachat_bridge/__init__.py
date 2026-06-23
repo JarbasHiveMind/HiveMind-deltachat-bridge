@@ -4,6 +4,7 @@ from ovos_utils.messagebus import FakeBus
 from ovos_utils.messagebus import Message
 
 from hm_deltachat_bridge.deltabot import DeltaChatBot
+from hm_deltachat_bridge.version import __version__
 
 
 class HiveMindDeltaChatBridge(HiveMessageBusClient):
