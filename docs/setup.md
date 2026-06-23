@@ -6,7 +6,7 @@ From nothing to a working DeltaChat chatbot backed by a HiveMind hub.
 
 The bridge is a HiveMind satellite with two connections:
 
-- **To DeltaChat** — it logs into the bot's mailbox (IMAP/SMTP) and watches for incoming messages.
+- **To DeltaChat** — it logs into the bot's mailbox (IMAP/SMTP) and watches for incoming messages. Need a mailbox? See [`accounts-and-chatmail.md`](accounts-and-chatmail.md) — a **chatmail** account is the quickest, bot-friendly option.
 - **To the HiveMind hub** — it authenticates with a HiveMind access key and password and exchanges encrypted protocol messages.
 
 Each inbound chat message is tagged with the sender's address and sent to the hub as a `recognizer_loop:utterance`. The hub's `speak` reply carries that address back, so the bridge routes the answer to the right chat.

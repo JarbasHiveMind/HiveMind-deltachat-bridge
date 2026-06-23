@@ -12,7 +12,7 @@ DeltaChat (email)  ⇄  HiveMind-deltachat-bridge  ⇄  HiveMind hub (hivemind-c
 
 - A running **HiveMind hub** ([hivemind-core](https://github.com/JarbasHiveMind/HiveMind-core)) reachable over the network.
 - A **HiveMind access key + password** for this bridge, issued by the hub with `hivemind-core add-client`.
-- An **email account** for the bot (address + password). DeltaChat works with any IMAP/SMTP mailbox; the address is what users message to talk to the hub.
+- An **email account** for the bot (address + password). DeltaChat works with any IMAP/SMTP mailbox; the address is what users message to talk to the hub. The easiest option is a **chatmail** account (instant, bot-friendly) — see [`docs/accounts-and-chatmail.md`](docs/accounts-and-chatmail.md) for how to get one and the full operator walkthrough.
 - The native **`libdeltachat` / `deltachat-core`** library installed on the system — the `deltachat` Python package binds to it.
 
 ## Install
