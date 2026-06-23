@@ -1,0 +1,30 @@
+name: E2E Tests
+
+# HiveMind-side end-to-end tests (tests/e2e/). These boot a REAL hivemind-core
+# hub (via hivescope's loopback WebSocket harness) and drive the REAL bridge
+# against it, mocking only the DeltaChat transport. They need hivescope, which
+# is unreleased — it is pulled from its feature branch with --pre (the whole
+# hivemind-core stack is currently alpha/prerelease) via pre_install_pip.
+#
+# The live DeltaChat transport test (tests/e2e/test_deltachat_live.py) skips
+# cleanly unless DELTACHAT_ADDR/DELTACHAT_PASSWORD are present, so it is a no-op
+# here and never blocks CI.
+
+on:
+  pull_request:
+    branches: [dev, master]
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    uses: OpenVoiceOS/gh-automations/.github/workflows/build-tests.yml@dev
+    with:
+      python_versions: '["3.11"]'
+      # hivescope (+ its alpha hivemind-core stack) from the loopback-whitelist
+      # branch, installed BEFORE the package build with --pre so the prerelease
+      # dependency graph resolves. The spec is spaceless on purpose: the reusable
+      # workflow expands pre_install_pip *unquoted* into `pip install ...`, so any
+      # inner space (e.g. "hivescope @ git+...") would be word-split and break.
+      pre_install_pip: '--pre hivescope@git+https://github.com/JarbasHiveMind/hivescope.git@fix/loopback-whitelist-only-connection'
+      install_extras: 'test'
+      test_path: 'tests/e2e/'

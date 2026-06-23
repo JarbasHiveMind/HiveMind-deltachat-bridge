@@ -10,4 +10,7 @@ jobs:
     uses: OpenVoiceOS/gh-automations/.github/workflows/build-tests.yml@dev
     with:
       python_versions: '["3.10", "3.11", "3.12", "3.13"]'
-      test_path: 'tests/'
+      # Network-free smoke tests only. The HiveMind-side e2e (tests/e2e/) needs a
+      # real hivemind-core hub via hivescope and runs in a dedicated job
+      # (e2e_tests.yml) so it doesn't drag hivescope into every matrix cell.
+      test_path: 'tests/test_smoke.py'
