@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "HiveMind-deltachat-bridge"
+description = "DeltaChat bridge for HiveMind — relay utterances between DeltaChat and the HiveMind bus"
+readme = "readme.md"
+authors = [{ name = "jarbasAI", email = "jarbasai@mailfence.com" }]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+dynamic = ["version", "dependencies"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge"
+
+[project.scripts]
+hm-deltachat-bridge = "hm_deltachat_bridge.__main__:launch_bot"
+
+[tool.setuptools]
+packages = ["hm_deltachat_bridge"]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = { attr = "hm_deltachat_bridge.version.__version__" }
+dependencies = { file = ["requirements.txt"] }
