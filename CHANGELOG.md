@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.3a2](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.0.3a2) (2026-07-04)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.0.3a1...0.0.3a2)
+
+**Merged pull requests:**
+
+- test: hivescope e2e + CI [\#13](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/13) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.0.3a1](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.0.3a1) (2026-06-23)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/b818cda5959c554659d330937da0c459885f3d10...0.0.3a1)
