@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.0a1](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.0a1) (2026-07-05)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.0.3a2...0.1.0a1)
+
+**Merged pull requests:**
+
+- feat: migrate to AsyncHiveMessageBusClient \(composition over inheritance\) [\#7](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/7) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.0.3a2](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.0.3a2) (2026-07-04)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.0.3a1...0.0.3a2)
