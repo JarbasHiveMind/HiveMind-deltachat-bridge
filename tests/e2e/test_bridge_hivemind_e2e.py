@@ -5,16 +5,15 @@ hivemind-core hub:
 
     inbound DeltaChat message
         -> DeltaChatBot.ac_incoming_message  (real bridge bot logic)
-        -> bridge.handle_delta_utterance     (real bridge method)
-        -> emit_mycroft(recognizer_loop:utterance)  -> real WebSocket
-        -> hivemind-core hub  -> agent bus
+        -> bridge._on_delta_utterance        (real bridge method, deltachat thread)
+        -> asyncio.run_coroutine_threadsafe -> client.emit_mycroft
+        -> real WebSocket -> hivemind-core hub -> agent bus
         -> responding agent emits `speak` back to the originating peer
-        -> real WebSocket -> bridge.internal_bus
-        -> bridge.handle_incoming_mycroft     (real bridge method)
+        -> real WebSocket -> bridge._on_speak (real bridge method, asyncio task)
         -> bot.speak(utterance, addr)         -> chat.send_text  (captured)
 
-Everything between ``emit_mycroft`` and ``handle_incoming_mycroft`` is the
-genuine production HiveMessageBusClient + hivemind-core stack over a localhost
+Everything between ``emit_mycroft`` and ``_on_speak`` is the genuine
+production AsyncHiveMessageBusClient + hivemind-core stack over a localhost
 WebSocket (hivescope's loopback hub). Only the DeltaChat *transport* is mocked:
 the ``deltachat`` library is never imported and no email/chatmail account is
 needed. The mock captures the bridge's outbound ``chat.send_text`` so the
@@ -30,7 +29,9 @@ Reference (HiveMind harness):
     hivemind-test-harness/tests/test_cascade.py
         responder on master.agent_protocol.bus.on("recognizer_loop:utterance")
 """
+import asyncio
 import sys
+import threading
 import time
 from types import ModuleType, SimpleNamespace
 from unittest.mock import MagicMock
@@ -152,28 +153,45 @@ def _extract_host_port(url: str):
     return parts[0], int(parts[1])
 
 
-def _make_bridge(url, key, password, bot):
-    """Construct the REAL bridge wired to the loopback hub, reusing `bot`.
+class _BridgeRunner:
+    """Run the async bridge on a dedicated asyncio loop thread.
 
-    HiveMindDeltaChatBridge.__init__ builds its own DeltaChatBot and calls
-    super().__init__()/connect(). We patch DeltaChatBot construction to return
-    our prepared bot instance so the inbound/outbound DeltaChat side is the
-    fake transport, while the HiveMessageBusClient + connect() are 100% real.
+    The bridge is asyncio-native (``await bridge.start()``); the hivescope hub
+    and the test body are synchronous. This runner mirrors production: the
+    bridge's loop is the "application loop", the test thread plays the role of
+    the deltachat library thread when it fires ``ac_incoming_message``.
     """
-    host, port = _extract_host_port(url)
-    return HiveMindDeltaChatBridge(
-        email="bot@example.org",
-        email_password="hunter2",
-        key=key,
-        password=password,
-        host=f"ws://{host}",
-        port=port,
-        useragent="dc-bridge-e2e",
-        self_signed=False,
-    )
+
+    def __init__(self, url, key, password, bot):
+        host, port = _extract_host_port(url)
+        self.bridge = HiveMindDeltaChatBridge(
+            key=key,
+            password=password,
+            host=f"ws://{host}",
+            port=port,
+            bot=bot,
+        )
+        self._loop = asyncio.new_event_loop()
+        self._thread = threading.Thread(target=self._loop.run_forever,
+                                        daemon=True)
+
+    def start(self, timeout=10):
+        self._thread.start()
+        fut = asyncio.run_coroutine_threadsafe(self.bridge.start(), self._loop)
+        fut.result(timeout=timeout)  # start() awaits the handshake
+
+    def close(self):
+        try:
+            fut = asyncio.run_coroutine_threadsafe(self.bridge.stop(),
+                                                   self._loop)
+            fut.result(timeout=10)
+        finally:
+            self._loop.call_soon_threadsafe(self._loop.stop)
+            self._thread.join(timeout=5)
+            self._loop.close()
 
 
-def test_deltachat_to_hivemind_roundtrip(monkeypatch):
+def test_deltachat_to_hivemind_roundtrip():
     """Full round-trip: DeltaChat in -> HiveMind hub -> DeltaChat out.
 
     Proves the bridge relays a user's DeltaChat utterance to a real hub, the
@@ -188,7 +206,7 @@ def test_deltachat_to_hivemind_roundtrip(monkeypatch):
     b = TopologyBuilder()
     m = b.add_master("M0", use_loopback=True)
     # whitelist-only ACL: grant the only type the bridge injects.
-    m.register_satellite("dc-key", password="dc-password",
+    m.register_satellite("dc-key", password="dc-Xk39vLq2mN8w-e2e",
                          allowed_types=["recognizer_loop:utterance"])
     b.start_all()
 
@@ -217,17 +235,14 @@ def test_deltachat_to_hivemind_roundtrip(monkeypatch):
         # --- prepare the bridge's DeltaChat bot (fake transport) -------------
         # Use the bridge's REAL DeltaChatBot class (its ac_incoming_message and
         # speak() are the genuine bridge logic); only the deltachat lib under it
-        # is faked. We construct it ourselves and hand it to the bridge.
+        # is faked. We construct it ourselves and hand it to the bridge (DI).
         bot = DeltaChatBot(email="bot@example.org", password="hunter2")
-        monkeypatch.setattr("hm_deltachat_bridge.DeltaChatBot",
-                            lambda *a, **k: bot)
         # don't spin real IO threads
         bot.start = MagicMock()
 
         url = m.network_protocol.url
-        bridge = _make_bridge(url, "dc-key", "dc-password", bot)
-        bridge.wait_for_handshake(timeout=10)
-        assert bridge.handshake_event.is_set(), "bridge handshake did not complete"
+        bridge = _BridgeRunner(url, "dc-key", "dc-Xk39vLq2mN8w-e2e", bot)
+        bridge.start(timeout=10)  # completes the HiveMind handshake
         time.sleep(1)  # let the encrypted HELLO register the peer
         assert len(m.connected_peers()) == 1, \
             f"expected 1 connected peer, got {m.connected_peers()}"
@@ -235,8 +250,8 @@ def test_deltachat_to_hivemind_roundtrip(monkeypatch):
         # --- inject a REAL inbound DeltaChat event ---------------------------
         # Drive the bridge bot's genuine ac_incoming_message handler with a
         # fake inbound deltachat Message. This calls handle_utterance, which the
-        # bridge wired to handle_delta_utterance -> emit_mycroft. The outbound
-        # reply is captured on this chat's send_text.
+        # bridge wired to _on_delta_utterance -> client.emit_mycroft (scheduled
+        # onto the bridge loop). The outbound reply is captured on send_text.
         chat = _CapturingChat()
         inbound = _make_inbound_message(inbound_text, user_addr, chat)
         bot.ac_incoming_message(inbound)
@@ -270,7 +285,7 @@ def test_deltachat_to_hivemind_roundtrip(monkeypatch):
         b.stop_all()
 
 
-def test_unanswered_utterance_sends_nothing(monkeypatch):
+def test_unanswered_utterance_sends_nothing():
     """If the hub agent never answers, the bridge sends no DeltaChat reply.
 
     Guards against a false-positive where the assertion would pass on stale
@@ -278,19 +293,18 @@ def test_unanswered_utterance_sends_nothing(monkeypatch):
     """
     b = TopologyBuilder()
     m = b.add_master("M0", use_loopback=True)
-    m.register_satellite("dc-key2", password="dc-password2",
+    m.register_satellite("dc-key2", password="dc-Xk39vLq2mN8w-e2e-2",
                          allowed_types=["recognizer_loop:utterance"])
     b.start_all()
 
     bridge = None
     try:
         bot = DeltaChatBot(email="bot@example.org", password="hunter2")
-        monkeypatch.setattr("hm_deltachat_bridge.DeltaChatBot",
-                            lambda *a, **k: bot)
         bot.start = MagicMock()
 
-        bridge = _make_bridge(m.network_protocol.url, "dc-key2", "dc-password2", bot)
-        bridge.wait_for_handshake(timeout=10)
+        bridge = _BridgeRunner(m.network_protocol.url, "dc-key2",
+                               "dc-Xk39vLq2mN8w-e2e-2", bot)
+        bridge.start(timeout=10)
         time.sleep(1)
 
         chat = _CapturingChat()
