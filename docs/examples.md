@@ -68,3 +68,6 @@ To restrict who may message the bot, set the allowlist on the underlying bot bef
 ```python
 bridge.bot.allowed_emails = ["alice@example.com", "bob@example.com"]
 ```
+
+---
+[← Configuration](configuration.md) · [Home](../readme.md)

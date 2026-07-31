@@ -2,7 +2,7 @@
 
 Relay a [DeltaChat](https://delta.chat/en/) account to a [HiveMind](https://github.com/JarbasHiveMind/HiveMind-core) hub.
 
-[DeltaChat](https://delta.chat) is an end-to-end-encrypted chat that runs over ordinary email. This bridge is a HiveMind **satellite** whose input and output are DeltaChat messages instead of a microphone. Each incoming chat message becomes an utterance sent to the hub; the hub's spoken reply is delivered back to the sender's chat. Any HiveMind hub (and the OVOS skills behind it) becomes reachable as an email-based chatbot.
+[DeltaChat](https://delta.chat) is an end-to-end-encrypted chat that runs over ordinary email. This bridge is a HiveMind **satellite** whose input and output are DeltaChat messages instead of a microphone. Each incoming chat message becomes an utterance sent to the hub. The hub's spoken reply goes back to the sender's chat. Any HiveMind hub, and the OVOS skills behind it, becomes reachable as an email-based chatbot.
 
 ```
 DeltaChat (email)  ⇄  HiveMind-deltachat-bridge  ⇄  HiveMind hub (hivemind-core)  ⇄  OVOS skills
@@ -12,8 +12,8 @@ DeltaChat (email)  ⇄  HiveMind-deltachat-bridge  ⇄  HiveMind hub (hivemind-c
 
 - A running **HiveMind hub** ([hivemind-core](https://github.com/JarbasHiveMind/HiveMind-core)) reachable over the network.
 - A **HiveMind access key + password** for this bridge, issued by the hub with `hivemind-core add-client`.
-- An **email account** for the bot (address + password). DeltaChat works with any IMAP/SMTP mailbox; the address is what users message to talk to the hub. The easiest option is a **chatmail** account (instant, bot-friendly) — see [`docs/accounts-and-chatmail.md`](docs/accounts-and-chatmail.md) for how to get one and the full operator walkthrough.
-- The native **`libdeltachat` / `deltachat-core`** library installed on the system — the `deltachat` Python package binds to it.
+- An **email account** for the bot (address + password). DeltaChat works with any IMAP/SMTP mailbox. The address is what users message to talk to the hub. The easiest option is a **chatmail** account (instant, bot-friendly): see [`docs/accounts-and-chatmail.md`](docs/accounts-and-chatmail.md) for how to get one and the full operator walkthrough.
+- The native **`libdeltachat` / `deltachat-core`** library installed on the system. The `deltachat` Python package binds to it.
 
 ## Install
 
@@ -73,8 +73,8 @@ The bridge forwards the message to the hub, waits for the `speak` reply, and ans
 
 | Option | Description | Default |
 | --- | --- | --- |
-| `--email` | Bot mailbox address | — |
-| `--email-password` | Bot mailbox password | — |
+| `--email` | Bot mailbox address | none |
+| `--email-password` | Bot mailbox password | none |
 | `--key` | HiveMind access key | read from identity file |
 | `--password` | HiveMind password | read from identity file |
 | `--host` | HiveMind host (a `ws://` prefix is added if no scheme) | read from identity file |
@@ -84,10 +84,10 @@ When `--key/--password/--host` are omitted they are read from the stored `NodeId
 
 ## Troubleshooting
 
-- **`NodeIdentity not set`** — run `hivemind-client set-identity`, or pass `--key/--password/--host`.
-- **No reply to messages** — confirm the hub is reachable and the access key is authorized (`hivemind-core list-clients`), and that an OVOS pipeline produces spoken answers.
-- **Mailbox login fails** — verify IMAP/SMTP is enabled for the bot mailbox and the password is an app password where the provider requires one.
-- **`ImportError` on `deltachat`** — install the native `libdeltachat` / `deltachat-core` for your platform.
+- **`NodeIdentity not set`**: run `hivemind-client set-identity`, or pass `--key/--password/--host`.
+- **No reply to messages**: confirm the hub is reachable and the access key is authorized (`hivemind-core list-clients`), and confirm an OVOS pipeline produces spoken answers.
+- **Mailbox login fails**: verify IMAP/SMTP is enabled for the bot mailbox, and that the password is an app password where the provider requires one.
+- **`ImportError` on `deltachat`**: install the native `libdeltachat` / `deltachat-core` for your platform.
 
 ## Documentation
 
