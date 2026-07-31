@@ -13,7 +13,7 @@ DeltaChat configures itself from the address and password: it discovers IMAP/SMT
 
 ### Sender allowlist
 
-The underlying bot supports an `allowed_emails` allowlist. When empty (the default) it accepts messages from any sender. There is no CLI flag for it yet; set it programmatically on `DeltaChatBot` if you need to restrict access.
+The underlying bot supports an `allowed_emails` allowlist. When empty (the default) it accepts messages from any sender. There is no CLI flag for it yet. Set it programmatically on `DeltaChatBot` if you need to restrict access.
 
 ## HiveMind credentials
 
@@ -48,3 +48,6 @@ Outbound utterances are tagged with the sender's address (`deltachat_addr`) in t
 ## Encryption
 
 The HiveMind connection is authenticated and encrypted by the protocol layer (handled by `hivemind-bus-client`). DeltaChat itself provides end-to-end encryption (Autocrypt) for the email transport between users and the bot mailbox.
+
+---
+[← Accounts & chatmail](accounts-and-chatmail.md) · [Home](../readme.md) · [Examples →](examples.md)
