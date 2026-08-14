@@ -37,6 +37,13 @@ hivemind-core add-client --name deltachat-bridge \
 
 Keep the access key and password. List clients with `hivemind-core list-clients`.
 
+A freshly registered client can connect, but the hub denies every message type until you whitelist it. Skipping this is the most common reason a bridge connects but never replies:
+
+```bash
+hivemind-core allow-msg recognizer_loop:utterance deltachat-bridge
+hivemind-core allow-msg speak deltachat-bridge
+```
+
 ## Step 3: Prepare the bot mailbox
 
 1. Create or pick an email account for the bot (any IMAP/SMTP provider).
