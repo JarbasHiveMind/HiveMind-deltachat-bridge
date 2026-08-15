@@ -68,15 +68,64 @@ class _StubBot:
             cb(utterance, addr)
 
 
+class _KwargsTolerantFakeBus(AsyncFakeHiveMessageBus):
+    """``AsyncFakeHiveMessageBus`` subclass whose ``connect()`` accepts
+    ``**kwargs``, so it stays a drop-in for the real async client even as
+    the real client's ``connect()`` signature grows new keyword args (e.g.
+    ``handshake_max_retries``) ahead of the published fakebus catching up."""
+
+    async def connect(self, bus=None, protocol=None, site_id=None, **kwargs):
+        return await super().connect(bus=bus, protocol=protocol, site_id=site_id)
+
+
 def _make_bridge() -> HiveMindDeltaChatBridge:
     return HiveMindDeltaChatBridge(
-        client=AsyncFakeHiveMessageBus(site_id="test-deltachat"),
+        client=_KwargsTolerantFakeBus(site_id="test-deltachat"),
         bot=_StubBot(),
     )
 
 
 def _run(coro):
     return asyncio.run(coro)
+
+
+class _RecordingClient(_KwargsTolerantFakeBus):
+    """Fakebus subclass that also records the kwargs ``connect()`` was
+    called with, so tests can assert the bridge bounds the handshake
+    instead of retrying forever."""
+
+    def __init__(self, *a, **kw):
+        super().__init__(*a, **kw)
+        self.connect_calls: list[dict] = []
+
+    async def connect(self, bus=None, protocol=None, site_id=None, **kwargs):
+        self.connect_calls.append({
+            "site_id": site_id,
+            "handshake_max_retries": kwargs.get("handshake_max_retries"),
+        })
+        return await super().connect(bus=bus, protocol=protocol, site_id=site_id)
+
+
+class TestHandshakeBounded(unittest.TestCase):
+    def test_connect_bounds_handshake_retries(self):
+        """start() must not leave the async client retrying the handshake
+        forever — handshake_max_retries must be a finite, non-None value."""
+        bridge = HiveMindDeltaChatBridge(
+            client=_RecordingClient(site_id="test-deltachat"),
+            bot=_StubBot(),
+        )
+
+        async def scenario():
+            await bridge.start()
+            await bridge.stop()
+
+        _run(scenario())
+
+        self.assertEqual(len(bridge.client.connect_calls), 1)
+        retries = bridge.client.connect_calls[0]["handshake_max_retries"]
+        self.assertIsNotNone(retries)
+        self.assertIsInstance(retries, int)
+        self.assertGreater(retries, 0)
 
 
 class TestLifecycle(unittest.TestCase):

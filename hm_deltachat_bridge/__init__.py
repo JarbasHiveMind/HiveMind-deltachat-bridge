@@ -36,6 +36,10 @@ from ovos_utils.log import LOG
 from hm_deltachat_bridge.deltabot import DeltaChatBot
 from hm_deltachat_bridge.version import __version__
 
+# default retry cap for the async client's handshake; unset (None) retries
+# forever and can wedge start() indefinitely if the hub never handshakes.
+DEFAULT_HANDSHAKE_MAX_RETRIES = 10
+
 
 class HiveMindDeltaChatBridge:
     """Bridge between a DeltaChat account and a HiveMind hub.
@@ -97,7 +101,8 @@ class HiveMindDeltaChatBridge:
         self.bot.start()
         LOG.info("== connected to DeltaChat")
 
-        await self.client.connect(site_id="deltachat")
+        await self.client.connect(site_id="deltachat",
+                                   handshake_max_retries=DEFAULT_HANDSHAKE_MAX_RETRIES)
         # speak events on the OVOS bus carry the deltachat_addr we tagged
         # on the outbound utterance; route them back to deltachat.
         self.client.on_mycroft("speak", self._on_speak)
