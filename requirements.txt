@@ -1,1 +1,4 @@
-jarbas_hive_mind>=0.10.1
+hivemind-bus-client[async]>=1.0.15a1,<2.0.0
+ovos-utils
+click
+deltachat
