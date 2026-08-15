@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1a2](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a2) (2026-08-15)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a1...0.1.1a2)
+
+**Merged pull requests:**
+
+- Bound the async client's HiveMind handshake retries [\#24](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/24) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.1.1a1](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a1) (2026-08-14)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.0a2...0.1.1a1)
