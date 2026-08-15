@@ -107,6 +107,10 @@ The hub's spoken reply goes back to the sender's chat.
 - Anyone who knows the bot's address can reach the hub. Restrict access at the hub
   (client ACLs / `allowed_types`) and, once available, the bridge's allowed-senders
   option.
+- A freshly registered client is denied every message type by default:
+  `hivemind-core allow-msg recognizer_loop:utterance deltachat-bridge` and
+  `hivemind-core allow-msg speak deltachat-bridge`. Skipping this leaves the bridge
+  connected but silent.
 
 ## Testing (live e2e)
 

@@ -40,6 +40,15 @@ hivemind-core add-client --name deltachat-bridge \
   --access-key "your-access-key" --password "your-password"
 ```
 
+A new client is registered but mute: the hub denies every message type until you whitelist it. Do this next, or the bridge will connect and never answer:
+
+```bash
+hivemind-core allow-msg recognizer_loop:utterance deltachat-bridge
+hivemind-core allow-msg speak deltachat-bridge
+```
+
+If you run more than one bridge on the same host, give each its own `hivemind-client set-identity` credentials. Bridges sharing an identity share a Noise session pin, and the hub treats reconnects from either as the same client, breaking encryption for both.
+
 **2. Store the HiveMind credentials** so they are read automatically:
 
 ```bash
@@ -87,6 +96,11 @@ When `--key/--password/--host` are omitted they are read from the stored `NodeId
 - **`NodeIdentity not set`**: run `hivemind-client set-identity`, or pass `--key/--password/--host`.
 - **No reply to messages**: confirm the hub is reachable and the access key is authorized (`hivemind-core list-clients`), and confirm an OVOS pipeline produces spoken answers.
 - **Mailbox login fails**: verify IMAP/SMTP is enabled for the bot mailbox, and that the password is an app password where the provider requires one.
+- **Bridge connects but never replies**: the client is registered but not whitelisted. Run `hivemind-core allow-msg recognizer_loop:utterance deltachat-bridge` and `hivemind-core allow-msg speak deltachat-bridge` on the hub.
+- **First message from a new contact gets no reply**: chatmail/Autocrypt treats a brand-new contact as unverified. Add the bot as a contact first (or scan its invite QR) and give it a moment to complete the key exchange before expecting an answer.
+- **`invalid api key` at connect time**: the hub rejected the handshake, usually because the bridge or `hivemind-bus-client` is older than the hub. Upgrade the bridge.
+- **"reconnect worker already running" in the log**: a known issue in older `hivemind-bus-client` releases when a dropped connection retries overlap. Fixed upstream; upgrade `hivemind-bus-client` and the bridge.
+- **Handshake fails after the hub was reinstalled or the client's key changed**: the bridge is holding a stale Noise session pin. Clear it on the hub with `hivemind-core reset-noise-pin deltachat-bridge` and restart the bridge.
 - **`ImportError` on `deltachat`**: install the native `libdeltachat` / `deltachat-core` for your platform.
 
 ## Documentation
