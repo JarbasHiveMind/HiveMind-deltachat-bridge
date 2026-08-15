@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.1a3](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a3) (2026-08-15)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a2...0.1.1a3)
+
+**Merged pull requests:**
+
+- docs: add AGENTS.md with per-repo agent conventions [\#23](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/23) ([JarbasAl](https://github.com/JarbasAl))
+- ci: test, build and publish the container image [\#21](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/21) ([JarbasAl](https://github.com/JarbasAl))
+- Add Dockerfile [\#19](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/19) ([JarbasAl](https://github.com/JarbasAl))
+- docs: make the hub allow-msg whitelist step explicit [\#18](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/18) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.1.1a2](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a2) (2026-08-15)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a1...0.1.1a2)
