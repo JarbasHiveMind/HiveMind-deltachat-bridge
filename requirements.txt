@@ -1,4 +1,4 @@
-hivemind-bus-client[async]>=1.0.13a1,<2.0.0
+hivemind-bus-client[async]>=1.0.15a1,<2.0.0
 ovos-utils
 click
 deltachat
