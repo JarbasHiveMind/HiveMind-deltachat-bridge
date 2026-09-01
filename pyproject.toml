@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "HiveMind-deltachat-bridge"
+description = "DeltaChat bridge for HiveMind — relay utterances between DeltaChat and the HiveMind bus"
+readme = "readme.md"
+authors = [{ name = "jarbasAI", email = "jarbasai@mailfence.com" }]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+dynamic = ["version", "dependencies"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+# e2e drives the bridge against a REAL hivemind-core hub booted in-process by
+# hivescope (loopback WebSocket); only the DeltaChat transport is mocked. The
+# prerelease floors below let a plain `pip install -e .[e2e]` resolve the 2.x
+# hivemind-core stack with no --pre (PEP 440: a prerelease floor opts that
+# package into prereleases). Flooring the plugin chain directly avoids pip
+# backtracking stable->prerelease across the large transitive graph.
+e2e = [
+    "pytest",
+    "hivescope>=0.8.0a1",
+    "ovos-bus-client>=2.9.1a1",
+    "hivemind-core>=4.13.18a1",
+    "hivemind-plugin-manager>=0.9.0a7",
+    "hivemind-websocket-protocol>=0.2.9a1",
+    "hivemind-ovos-agent-plugin>=0.3.10a1",
+    "hivemind-json-db-plugin>=0.0.4a7",
+    "hivemind-sqlite-database>=0.4.3a5",
+]
+
+[project.urls]
+Homepage = "https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge"
+
+[project.scripts]
+hm-deltachat-bridge = "hm_deltachat_bridge.__main__:launch_bot"
+
+[tool.setuptools]
+packages = ["hm_deltachat_bridge"]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = { attr = "hm_deltachat_bridge.version.__version__" }
+dependencies = { file = ["requirements.txt"] }
