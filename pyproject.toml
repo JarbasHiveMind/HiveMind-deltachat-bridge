@@ -21,14 +21,14 @@ test = ["pytest"]
 # backtracking stable->prerelease across the large transitive graph.
 e2e = [
     "pytest",
-    "hivescope>=0.5.2a1",
-    "ovos-bus-client>=2.0.0a3,<3.0.0",
-    "hivemind-core>=4.6.7a1",
-    "hivemind-plugin-manager>=0.8.0a1",
-    "hivemind-websocket-protocol>=0.2.1a1",
-    "hivemind-ovos-agent-plugin>=0.3.2a1",
-    "hivemind-json-db-plugin>=0.0.3a2",
-    "hivemind-sqlite-database>=0.4.0a2",
+    "hivescope>=0.8.0a1",
+    "ovos-bus-client>=2.9.1a1",
+    "hivemind-core>=4.13.18a1",
+    "hivemind-plugin-manager>=0.9.0a7",
+    "hivemind-websocket-protocol>=0.2.9a1",
+    "hivemind-ovos-agent-plugin>=0.3.10a1",
+    "hivemind-json-db-plugin>=0.0.4a7",
+    "hivemind-sqlite-database>=0.4.3a5",
 ]
 
 [project.urls]
