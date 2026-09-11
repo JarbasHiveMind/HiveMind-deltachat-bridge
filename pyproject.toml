@@ -9,7 +9,15 @@ readme = "readme.md"
 authors = [{ name = "jarbasAI", email = "jarbasai@mailfence.com" }]
 license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
-dynamic = ["version", "dependencies"]
+dynamic = ["version"]
+dependencies = [
+    "hivemind-bus-client[async]>=1.0.16a1",
+    "ovos-utils>=0.13.15a1",
+    "click",
+    # no wheel exists for CPython 3.14; without a floor a 3.14 resolver
+    # takes the 2022 source distribution 1.101.0 without a word
+    "deltachat>=2.0,<3",
+]
 
 [project.optional-dependencies]
 test = ["pytest"]
@@ -43,4 +51,3 @@ include-package-data = true
 
 [tool.setuptools.dynamic]
 version = { attr = "hm_deltachat_bridge.version.__version__" }
-dependencies = { file = ["requirements.txt"] }
