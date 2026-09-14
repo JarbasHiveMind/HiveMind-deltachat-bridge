@@ -8,3 +8,10 @@ on:
 jobs:
   license_check:
     uses: OpenVoiceOS/gh-automations/.github/workflows/license-check.yml@dev
+    with:
+      # The shared workflow defaults to Python 3.14. `deltachat` 2.23.0 ships
+      # wheels for cp39 to cp313 and no sdist, so an install on 3.14 cannot
+      # resolve and the job fails before it reads a single licence. Hold this
+      # job at the newest Python the dependency supports, which is also the
+      # top of this repository's own build matrix.
+      python_version: "3.13"
