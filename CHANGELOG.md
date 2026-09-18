@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3a2](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.3a2) (2026-09-18)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.3a1...0.1.3a2)
+
+**Merged pull requests:**
+
+- Update docker/build-push-action action to v7 [\#31](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/31) ([renovate[bot]](https://github.com/apps/renovate))
+
 ## [0.1.3a1](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.3a1) (2026-09-18)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.2a1...0.1.3a1)
