@@ -1,4 +1,0 @@
-hivemind-bus-client[async]>=1.0.16a1
-ovos-utils>=0.13.15a1
-click
-deltachat

@@ -65,11 +65,9 @@ prior art before inventing a new pattern here.
 
 - **Floor pins only** (`>=X.Y.Za1`), bumped when a feature or fix is actually
   needed — with a one-line comment saying why. No upper caps unless a specific
-  released version is genuinely broken (say which and why). This repo's
-  `requirements.txt` already pins `hivemind-bus-client[async]>=1.0.13a1,<2.0.0`
-  — keep that floor, or raise it, never lower it.
+  released version is genuinely broken (say which and why).
 - **No lockfiles, ever.** Target the latest alphas (`--prerelease=allow`).
-- Everything in `pyproject.toml`/`requirements.txt` (deps, metadata, version).
+- Everything in `pyproject.toml` (deps, metadata, version).
   Never install from git — depend on a published PyPI alpha.
 - Apache-2.0. Do not add GPL/AGPL dependencies.
 
