@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3a3](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.3a3) (2026-09-18)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.3a2...0.1.3a3)
+
+**Merged pull requests:**
+
+- Update docker/login-action action to v4 [\#32](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/32) ([renovate[bot]](https://github.com/apps/renovate))
+
 ## [0.1.3a2](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.3a2) (2026-09-18)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.3a1...0.1.3a2)
@@ -26,11 +34,15 @@
 
 ## [0.1.1a6](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a6) (2026-08-15)
 
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a5...0.1.1a6)
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a3...0.1.1a6)
 
 **Merged pull requests:**
 
 - Update actions/checkout action to v7 [\#27](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/27) ([renovate[bot]](https://github.com/apps/renovate))
+
+## [0.1.1a3](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a3) (2026-08-15)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a5...0.1.1a3)
 
 ## [0.1.1a5](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a5) (2026-08-15)
 
@@ -38,11 +50,7 @@
 
 ## [0.1.1a4](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a4) (2026-08-15)
 
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a3...0.1.1a4)
-
-## [0.1.1a3](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a3) (2026-08-15)
-
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a2...0.1.1a3)
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a2...0.1.1a4)
 
 **Merged pull requests:**
 
