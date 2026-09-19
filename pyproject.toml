@@ -11,7 +11,7 @@ license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
 dynamic = ["version"]
 dependencies = [
-    "hivemind-bus-client[async]>=1.0.16a1",
+    "hivemind-bus-client[async]>=1.2.1a1",
     "ovos-utils>=0.13.15a1",
     "click",
     # deltachat ships manylinux wheels for cp39 through cp313 only. Without a
