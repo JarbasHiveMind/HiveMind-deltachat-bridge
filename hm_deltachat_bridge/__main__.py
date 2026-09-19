@@ -15,7 +15,7 @@ LOG.set_level("DEBUG")
 
 async def _amain(email: str, email_password: str,
                  key: str, password: str, host: str, port: int) -> None:
-    identity = NodeIdentity()
+    identity = NodeIdentity(app_name="deltachat-bridge")
     password = password or identity.password
     key = key or identity.access_key
     host = host or identity.default_master
@@ -32,6 +32,7 @@ async def _amain(email: str, email_password: str,
     bridge = HiveMindDeltaChatBridge(
         email=email, email_password=email_password,
         key=key, host=host, port=port, password=password,
+        identity=identity,
     )
 
     stop_event = asyncio.Event()

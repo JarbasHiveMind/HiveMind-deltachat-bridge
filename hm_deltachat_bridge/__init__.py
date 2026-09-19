@@ -49,7 +49,7 @@ class HiveMindDeltaChatBridge:
         bridge = HiveMindDeltaChatBridge(
             email="user@example.com",
             email_password="...",
-            identity=NodeIdentity(),
+            identity=NodeIdentity(app_name="deltachat-bridge"),
         )
         await bridge.start()
         try:
