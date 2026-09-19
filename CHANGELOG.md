@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.4a1](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.4a1) (2026-09-19)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.3a6...0.1.4a1)
+
+**Merged pull requests:**
+
+- fix: the bridge keeps its own HiveMind identity \(CRYPTO-1 §2\) [\#48](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/48) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.1.3a6](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.3a6) (2026-09-18)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.3a4...0.1.3a6)
@@ -59,15 +67,15 @@
 
 ## [0.1.1a4](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a4) (2026-08-15)
 
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a3...0.1.1a4)
-
-## [0.1.1a3](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a3) (2026-08-15)
-
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a5...0.1.1a3)
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a5...0.1.1a4)
 
 ## [0.1.1a5](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a5) (2026-08-15)
 
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a2...0.1.1a5)
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a3...0.1.1a5)
+
+## [0.1.1a3](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a3) (2026-08-15)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a2...0.1.1a3)
 
 **Merged pull requests:**
 
