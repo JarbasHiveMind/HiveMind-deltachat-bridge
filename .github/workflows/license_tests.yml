@@ -1,0 +1,15 @@
+name: License Check
+
+on:
+  pull_request:
+    branches: [dev]
+  workflow_dispatch:
+
+jobs:
+  license_check:
+    uses: OpenVoiceOS/gh-automations/.github/workflows/license-check.yml@dev
+    with:
+      # deltachat ships no wheel for 3.14, and an unpinned resolve there falls
+      # back to the 1.x source distribution, which builds against native
+      # libdeltachat and fails. Match the versions build_tests runs on.
+      python_version: '3.13'
