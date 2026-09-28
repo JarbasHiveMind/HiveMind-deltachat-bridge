@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.5a1](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.5a1) (2026-09-28)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.4a1...0.1.5a1)
+
+**Merged pull requests:**
+
+- fix\(tests\): the conftest moves into tests/, so the suite imports the wheel [\#51](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/51) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.1.4a1](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.4a1) (2026-09-19)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.3a6...0.1.4a1)
@@ -59,19 +67,19 @@
 
 ## [0.1.1a6](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a6) (2026-08-15)
 
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a4...0.1.1a6)
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a5...0.1.1a6)
 
 **Merged pull requests:**
 
 - Update actions/checkout action to v7 [\#27](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/27) ([renovate[bot]](https://github.com/apps/renovate))
 
-## [0.1.1a4](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a4) (2026-08-15)
-
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a5...0.1.1a4)
-
 ## [0.1.1a5](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a5) (2026-08-15)
 
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a3...0.1.1a5)
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a4...0.1.1a5)
+
+## [0.1.1a4](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a4) (2026-08-15)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a3...0.1.1a4)
 
 ## [0.1.1a3](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a3) (2026-08-15)
 
