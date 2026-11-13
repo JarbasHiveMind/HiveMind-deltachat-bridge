@@ -16,8 +16,11 @@ class DeltaChatBot(threading.Thread):
         self.allowed_emails = []  # if empty allow all
         self.account.set_config("addr", self.email)
         self.account.set_config("mail_pw", self.pswd)
-        self.account.set_config("mvbox_move", "0")
-        self.account.set_config("sentbox_watch", "0")
+        # optional tuning keys; deltachat releases drop some of them
+        config_keys = self.account.get_config("sys.config_keys").split()
+        for key in ("mvbox_move", "sentbox_watch"):
+            if key in config_keys:
+                self.account.set_config(key, "0")
         configtracker = self.account.configure()
         configtracker.wait_finish()
         # map email addresses to deltachat objects

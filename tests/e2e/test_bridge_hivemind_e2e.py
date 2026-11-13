@@ -81,6 +81,8 @@ def _install_fake_deltachat():
             self._config[k] = v
 
         def get_config(self, k):
+            if k == "sys.config_keys":
+                return "addr mail_pw mvbox_move sentbox_watch"
             return self._config.get(k)
 
         def configure(self):
