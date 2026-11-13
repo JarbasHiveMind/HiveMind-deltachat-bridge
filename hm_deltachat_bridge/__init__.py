@@ -26,6 +26,7 @@ that would also drop that thread.
 from __future__ import annotations
 
 import asyncio
+import random
 from typing import Optional
 
 from hivemind_bus_client.async_client import AsyncHiveMessageBusClient
@@ -39,6 +40,10 @@ from hm_deltachat_bridge.version import __version__
 # default retry cap for the async client's handshake; unset (None) retries
 # forever and can wedge start() indefinitely if the hub never handshakes.
 DEFAULT_HANDSHAKE_MAX_RETRIES = 10
+
+# the async client has no reconnect loop of its own; the bridge drives connect()
+RECONNECT_INITIAL_DELAY = 1.0
+RECONNECT_MAX_DELAY = 60.0
 
 
 class HiveMindDeltaChatBridge:
@@ -87,6 +92,15 @@ class HiveMindDeltaChatBridge:
         )
         self._loop: Optional[asyncio.AbstractEventLoop] = None
         self._started = False
+        self._stopping = False
+        self._reconnect_task: Optional[asyncio.Task] = None
+        self.reconnect_initial_delay = RECONNECT_INITIAL_DELAY
+        self.reconnect_max_delay = RECONNECT_MAX_DELAY
+        # set when the hub refuses this identity; retrying cannot fix that
+        self.refusal: Optional[str] = None
+        self.refused = asyncio.Event()
+        self.client.emitter.on("close", self._on_close)
+        self.client.emitter.on("auth_rejected", self._on_auth_rejected)
 
     # ------------------------------------------------------------------
     # lifecycle
@@ -113,6 +127,10 @@ class HiveMindDeltaChatBridge:
         """Shutdown bot, close HiveMind connection. Idempotent."""
         if not self._started:
             return
+        self._stopping = True
+        if self._reconnect_task is not None:
+            self._reconnect_task.cancel()
+            self._reconnect_task = None
         try:
             self.client.remove("speak", self._on_speak)
         except Exception:
@@ -126,6 +144,53 @@ class HiveMindDeltaChatBridge:
         except Exception:
             LOG.exception("error closing HiveMind client")
         self._started = False
+        self._stopping = False
+
+    # ------------------------------------------------------------------
+    # reconnect
+    # ------------------------------------------------------------------
+
+    def _on_auth_rejected(self, reason) -> None:
+        self.refusal = str(reason)
+        self.refused.set()
+
+    def _on_close(self, *_) -> None:
+        if (not self._started or self._stopping or self.refused.is_set()
+                or self._reconnect_task is not None):
+            return
+        LOG.info("disconnected from HiveMind, reconnecting")
+        self._reconnect_task = asyncio.ensure_future(self._reconnect())
+
+    async def _reconnect(self) -> None:
+        """Re-run ``connect()`` on the same client with exponential backoff.
+
+        The speak handler lives on the client's internal bus, which a new
+        connect() keeps, so it needs no re-registration.
+        """
+        delay = self.reconnect_initial_delay
+        try:
+            while not self.refused.is_set():
+                await asyncio.sleep(random.uniform(delay / 2, delay))
+                try:
+                    await self.client.connect(
+                        site_id="deltachat",
+                        handshake_max_retries=DEFAULT_HANDSHAKE_MAX_RETRIES)
+                except Exception as e:
+                    # the client latches a refusal and emits "auth_rejected"
+                    # before wait_for_handshake raises; a bare
+                    # ConnectionRefusedError is a closed port, hub not up yet
+                    if self.refused.is_set():
+                        LOG.error(
+                            f"HiveMind refused this identity: {self.refusal}")
+                        return
+                    LOG.info(f"reconnect to HiveMind failed ({e!r}), "
+                             f"retrying in up to {delay * 2:g}s")
+                    delay = min(delay * 2, self.reconnect_max_delay)
+                    continue
+                LOG.info("reconnected to HiveMind")
+                return
+        finally:
+            self._reconnect_task = None
 
     # ------------------------------------------------------------------
     # deltachat -> HiveMind (callback runs on deltachat lib thread)
