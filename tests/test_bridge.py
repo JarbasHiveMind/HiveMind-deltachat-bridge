@@ -315,3 +315,122 @@ class TestRoundTrip(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class _DroppableClient(_KwargsTolerantFakeBus):
+    """Fakebus whose link can be dropped the way the real client reports it:
+    state cleared and a ``close`` event, with no reconnect of its own."""
+
+    def __init__(self, *a, **kw):
+        super().__init__(*a, **kw)
+        self.connect_calls = 0
+        self.connect_outcomes: list[Exception] = []
+
+    async def connect(self, bus=None, protocol=None, site_id=None, **kwargs):
+        self.connect_calls += 1
+        if self.connect_outcomes:
+            exc = self.connect_outcomes.pop(0)
+            if getattr(exc, "auth_refusal", False):
+                self.emitter.emit("auth_rejected", str(exc))
+            raise exc
+        return await super().connect(bus=bus, protocol=protocol, site_id=site_id)
+
+    def drop(self):
+        self.connected_event.clear()
+        self.handshake_event.clear()
+        self.emitter.emit("close")
+
+
+def _fast_bridge(client) -> HiveMindDeltaChatBridge:
+    bridge = HiveMindDeltaChatBridge(client=client, bot=_StubBot())
+    bridge.reconnect_initial_delay = 0.01
+    bridge.reconnect_max_delay = 0.04
+    return bridge
+
+
+async def _until(predicate, timeout=2.0):
+    loop = asyncio.get_running_loop()
+    end = loop.time() + timeout
+    while not predicate():
+        if loop.time() > end:
+            raise AssertionError("condition not reached in time")
+        await asyncio.sleep(0.005)
+
+
+class TestReconnect(unittest.TestCase):
+    def test_reconnects_after_hub_closes_and_keeps_relaying(self):
+        client = _DroppableClient(site_id="test-deltachat")
+        bridge = _fast_bridge(client)
+
+        async def scenario():
+            await bridge.start()
+            try:
+                # two failed attempts while the hub is still down, then it is back
+                client.connect_outcomes = [OSError("down"), OSError("down")]
+                client.drop()
+                await _until(lambda: client.connect_calls == 4
+                             and client.handshake_event.is_set())
+                bridge.bot.fire_incoming("after restart", "a@example.com")
+                await asyncio.sleep(0.02)
+                client.internal_bus.emit(Message(
+                    "speak", {"utterance": "hi"},
+                    {"deltachat_addr": "a@example.com"}))
+            finally:
+                await bridge.stop()
+
+        _run(scenario())
+        self.assertEqual(client.connect_calls, 4)
+        self.assertEqual(bridge.bot.spoken, [("hi", "a@example.com")])
+        self.assertEqual(client.emitted[-1].payload.data["utterances"],
+                         ["after restart"])
+
+    def test_closed_port_is_retried_not_treated_as_refusal(self):
+        client = _DroppableClient(site_id="test-deltachat")
+        bridge = _fast_bridge(client)
+
+        async def scenario():
+            await bridge.start()
+            try:
+                client.connect_outcomes = [
+                    ConnectionRefusedError(111, "Connect call failed"),
+                    ConnectionRefusedError(111, "Connect call failed")]
+                client.drop()
+                await _until(lambda: client.connect_calls == 4
+                             and client.handshake_event.is_set())
+            finally:
+                await bridge.stop()
+
+        _run(scenario())
+        self.assertFalse(bridge.refused.is_set())
+
+    def test_auth_refusal_stops_retrying(self):
+        client = _DroppableClient(site_id="test-deltachat")
+        bridge = _fast_bridge(client)
+
+        async def scenario():
+            await bridge.start()
+            try:
+                refusal = ConnectionRefusedError("bad key")
+                refusal.auth_refusal = True
+                client.connect_outcomes = [refusal]
+                client.drop()
+                await asyncio.wait_for(bridge.refused.wait(), 2)
+                await asyncio.sleep(0.1)
+            finally:
+                await bridge.stop()
+
+        _run(scenario())
+        self.assertEqual(client.connect_calls, 2)
+        self.assertTrue(bridge.refused.is_set())
+
+    def test_stop_does_not_reconnect(self):
+        client = _DroppableClient(site_id="test-deltachat")
+        bridge = _fast_bridge(client)
+
+        async def scenario():
+            await bridge.start()
+            await bridge.stop()
+            await asyncio.sleep(0.1)
+
+        _run(scenario())
+        self.assertEqual(client.connect_calls, 1)

@@ -14,7 +14,7 @@ LOG.set_level("DEBUG")
 
 
 async def _amain(email: str, email_password: str,
-                 key: str, password: str, host: str, port: int) -> None:
+                 key: str, password: str, host: str, port: int) -> int:
     identity = NodeIdentity(app_name="deltachat-bridge")
     password = password or identity.password
     key = key or identity.access_key
@@ -46,11 +46,18 @@ async def _amain(email: str, email_password: str,
 
     await bridge.start()
     try:
-        await stop_event.wait()
+        waiters = [asyncio.ensure_future(stop_event.wait()),
+                   asyncio.ensure_future(bridge.refused.wait())]
+        try:
+            await asyncio.wait(waiters, return_when=asyncio.FIRST_COMPLETED)
+        finally:
+            for w in waiters:
+                w.cancel()
     except (KeyboardInterrupt, asyncio.CancelledError):
         pass
     finally:
         await bridge.stop()
+    return 1 if bridge.refused.is_set() else 0
 
 
 # TODO - allowed emails option
@@ -66,7 +73,8 @@ async def _amain(email: str, email_password: str,
 @click.option("--port", help="HiveMind port number (default: 5678)", type=int, default=5678)
 def launch_bot(email: str, email_password: str,
                key: str, password: str, host: str, port: int) -> None:
-    asyncio.run(_amain(email, email_password, key, password, host, port))
+    raise SystemExit(asyncio.run(
+        _amain(email, email_password, key, password, host, port)))
 
 
 if __name__ == "__main__":
