@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.7a1](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.7a1) (2026-11-13)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.6a1...0.1.7a1)
+
+**Merged pull requests:**
+
+- fix: reconnect to the hub when the connection closes [\#55](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/55) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.1.6a1](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.6a1) (2026-11-13)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.5a2...0.1.6a1)
