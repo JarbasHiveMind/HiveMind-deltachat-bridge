@@ -86,8 +86,8 @@ hm-deltachat-bridge \
   --port           5678
 ```
 
-If you've already stored a HiveMind identity (e.g. with `hivemind-client
-set-identity`), you can omit `--key/--password/--host` and the bridge reads them
+If you've already stored a HiveMind identity (with `hivemind-client --app
+deltachat-bridge set-identity`), you can omit `--key/--password/--host` and the bridge reads them
 from the identity file.
 
 ## 5. Talk to it

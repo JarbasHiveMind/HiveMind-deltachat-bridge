@@ -65,7 +65,7 @@ pip install HiveMind-deltachat-bridge
 Store an identity once:
 
 ```bash
-hivemind-client set-identity \
+hivemind-client --app deltachat-bridge set-identity \
   --key "your-access-key" \
   --password "your-password" \
   --host "ws://192.168.1.100"

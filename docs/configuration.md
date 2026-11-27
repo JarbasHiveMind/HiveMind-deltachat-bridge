@@ -29,7 +29,7 @@ The underlying bot supports an `allowed_emails` allowlist. When empty (the defau
 When `--key/--password/--host` are not passed, the bridge reads them from the stored `NodeIdentity`. Set it once:
 
 ```bash
-hivemind-client set-identity \
+hivemind-client --app deltachat-bridge set-identity \
   --key "your-access-key" \
   --password "your-password" \
   --host "ws://192.168.1.100"

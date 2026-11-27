@@ -5,7 +5,7 @@
 Store the HiveMind identity once, then run with only the mailbox login:
 
 ```bash
-hivemind-client set-identity --key KEY --password PASS --host ws://192.168.1.100
+hivemind-client --app deltachat-bridge set-identity --key KEY --password PASS --host ws://192.168.1.100
 hm-deltachat-bridge --email bot@example.com --email-password "mailbox-password"
 ```
 
