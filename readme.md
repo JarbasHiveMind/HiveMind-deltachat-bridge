@@ -47,12 +47,12 @@ hivemind-core allow-msg recognizer_loop:utterance deltachat-bridge
 hivemind-core allow-msg speak deltachat-bridge
 ```
 
-If you run more than one bridge on the same host, give each its own `hivemind-client set-identity` credentials. Bridges sharing an identity share a Noise session pin, and the hub treats reconnects from either as the same client, breaking encryption for both.
+If you run more than one bridge on the same host, run each bridge as a different user, so that each bridge has its own identity file. Bridges sharing an identity share a Noise session pin, and the hub treats reconnects from either as the same client, breaking encryption for both.
 
 **2. Store the HiveMind credentials** so they are read automatically:
 
 ```bash
-hivemind-client set-identity \
+hivemind-client --app deltachat-bridge set-identity \
   --key "your-access-key" \
   --password "your-password" \
   --host "ws://192.168.1.100"
@@ -93,7 +93,7 @@ When `--key/--password/--host` are omitted they are read from the stored `NodeId
 
 ## Troubleshooting
 
-- **`NodeIdentity not set`**: run `hivemind-client set-identity`, or pass `--key/--password/--host`.
+- **`NodeIdentity not set`**: run `hivemind-client --app deltachat-bridge set-identity`, or pass `--key/--password/--host`.
 - **No reply to messages**: confirm the hub is reachable and the access key is authorized (`hivemind-core list-clients`), and confirm an OVOS pipeline produces spoken answers.
 - **Mailbox login fails**: verify IMAP/SMTP is enabled for the bot mailbox, and that the password is an app password where the provider requires one.
 - **Bridge connects but never replies**: the client is registered but not whitelisted. Run `hivemind-core allow-msg recognizer_loop:utterance deltachat-bridge` and `hivemind-core allow-msg speak deltachat-bridge` on the hub.
