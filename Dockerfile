@@ -1,7 +1,7 @@
 # Grounded in ser9's ~/hivemind-bridges/deltachat/run.sh:
 #   hm-deltachat-bridge --email ... --email-password ... --key ... \
 #     --password ... --host ws://127.0.0.1 --port 5678
-FROM python:3.12-slim
+FROM python:3.15-slim
 
 ENV PIP_NO_CACHE_DIR=1
 RUN pip install --no-cache-dir --pre --upgrade \
