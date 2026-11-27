@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.7a2](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.7a2) (2026-11-27)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.7a1...0.1.7a2)
+
+**Merged pull requests:**
+
+- docs: pass --app deltachat-bridge to hivemind-client set-identity [\#60](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/pull/60) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.1.7a1](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.7a1) (2026-11-13)
 
 [Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.6a1...0.1.7a1)
@@ -99,15 +107,15 @@
 
 ## [0.1.1a5](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a5) (2026-08-15)
 
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a3...0.1.1a5)
-
-## [0.1.1a3](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a3) (2026-08-15)
-
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a4...0.1.1a3)
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a4...0.1.1a5)
 
 ## [0.1.1a4](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a4) (2026-08-15)
 
-[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a2...0.1.1a4)
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a3...0.1.1a4)
+
+## [0.1.1a3](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/tree/0.1.1a3) (2026-08-15)
+
+[Full Changelog](https://github.com/JarbasHiveMind/HiveMind-deltachat-bridge/compare/0.1.1a2...0.1.1a3)
 
 **Merged pull requests:**
 
